@@ -1,98 +1,156 @@
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
 
+const names = {
+  6586:	'Štěpánka',
+  2664:	'Kuča',
+  4614:	'Dero',
+  2468:	'Aleš',
+  9681:	'Kača',
+  1315:	'Darwin',
+  9994:	'Wal',
+  2045:	'Radek Fiľakovský',
+  7899:	'Markét',
+  1545:	'Dark',
+  4377:	'hlína',
+  2495:	'Monika Spasovová',
+  1804:	'okounátor',
+  5011:	'Ondra Suchánek',
+  7475:	'Eliška',
+  2689:	'Hanka Svozilová',
+  2294:	'Karel Martišek',
+  1711:	'Maťa',
+  4489:	'Karel Vácha',
+  7086:	'Vašek Peca',
+  7147:	'Petr Svoboda',
+  3483:	'Tíman',
+  8618:	'Tinka',
+  8743:	'M',
+  9372:	'Bebe',
+  1982:	'Petr Zika',
+  6486:	'Elif',
+  2924:	'Kristýna Kozlíková',
+  3605:	'dalimir',
+  1417:	'Vašek Potoček',
+  2402:	'Michaela Nováková',
+  9250:	'Liliana Lamserová',
+  2501:	'Láďa',
+  5610:	'Tomáš Brokl',
+  3169:	'Vendula Rosová',
+  1869:	'Vojtěch Pivnička',
+  3787:	'Ela',
+  1048:	'Peťa S',
+  8598:	'David S',
+  5857:	'Petr Černocký',
+  1546:	'Sváťa Fronk',
+  8174:	'Martin Matulík',
+  4542:	'Anetka',
+  7992:	'Kormi',
+  3356:	'Anet',
+  3797:	'Míša',
+  9461:	'Honza',
+  1839:	'Lucka',
+  5939:	'Marko',
+  5721:	'Dan Janek',
+  1569:	'Adamat',
+  2699:	'JiříK',
+  9429:	'Anonyme',
+  4112:	'Petra Barančíková',
+  1057:	'Petr Skála',
+  5242:	'Vojtech Bardiovský',
+  9337:	'Vlastimil',
+  5448:	'Morče na útěku',
+  6016:	'Single kapybara',
+  7496:	'Kontrolované snižování indexu',
+  8107:	'Mirek',
+  2472:	'Míša Maršálková',
+  8693:	'Palko',
+  8859:	'Míla',
+  6977:	'Testovací účet'
+}
+
 exports.welcome = function welcome() {
   const voiceResponse = new VoiceResponse();
 
   const gather = voiceResponse.gather({
     action: '/ivr/menu',
-    numDigits: '1',
+    numDigits: '4',
     method: 'POST',
   });
 
   gather.say(
-    'Thanks for calling the E T Phone Home Service. ' +
-    'Please press 1 for directions. ' +
-    'Press 2 for a list of planets to call.',
-    {loop: 3}
+    'Vítejte v záchranném centru hry Monolog.' +
+    'Zadejte svůj kód.',
+    {loop: 1, language: 'cs-CZ', voice: 'Google.cs-CZ-Standard-A'}
   );
 
   return voiceResponse.toString();
 };
 
-exports.menu = function menu(digit) {
-  const optionActions = {
-    '1': giveExtractionPointInstructions,
-    '2': listPlanets,
-  };
-
-  return (optionActions[digit])
-    ? optionActions[digit]()
-    : redirectWelcome();
-};
-
-exports.planets = function planets(digit) {
-  const optionActions = {
-    '2': '+19295566487',
-    '3': '+17262043675',
-    '4': '+16513582243',
-  };
-
-  if (optionActions[digit]) {
-    const twiml = new VoiceResponse();
-    twiml.dial(optionActions[digit]);
-    return twiml.toString();
+exports.menu = function menu(code) {
+  if (Object.keys(names).includes(code)) {
+    return selectStage(code)
+  } else {
+    return redirectWelcome();
   }
-
-  return redirectWelcome();
 };
 
-/**
- * Returns Twiml
- * @return {String}
- */
-function giveExtractionPointInstructions() {
-  const twiml = new VoiceResponse();
+function selectStage(code) {
+  const voiceResponse = new VoiceResponse();
 
-  twiml.say(
-    'To get to your extraction point, get on your bike and go down ' +
-    'the street. Then Left down an alley. Avoid the police cars. Turn left ' +
-    'into an unfinished housing development. Fly over the roadblock. Go ' +
-    'passed the moon. Soon after you will see your mother ship.',
-    {voice: 'Polly.Amy', language: 'en-GB'}
-  );
-
-  twiml.say(
-    'Thank you for calling the ET Phone Home Service - the ' +
-    'adventurous alien\'s first choice in intergalactic travel'
-  );
-
-  twiml.hangup();
-
-  return twiml.toString();
-}
-
-/**
- * Returns a TwiML to interact with the client
- * @return {String}
- */
-function listPlanets() {
-  const twiml = new VoiceResponse();
-
-  const gather = twiml.gather({
-    action: '/ivr/planets',
+  const gather = voiceResponse.gather({
+    action: `/ivr/giveHint?code=${code}`,
     numDigits: '1',
     method: 'POST',
   });
 
   gather.say(
-    'To call the planet Broh doe As O G, press 2. To call the planet DuhGo ' +
-    'bah, press 3. To call an oober asteroid to your location, press 4. To ' +
-    'go back to the main menu, press the star key ',
-    {voice: 'Polly.Amy', language: 'en-GB', loop: 3}
+    'Zvolte číslo stanoviště, na které chcete záchranu.' +
+    'Pro zjištění, kde se nachází cíl, zvolte 0. ', 
+    {loop: 1, language: 'cs-CZ', voice: 'Google.cs-CZ-Standard-A'}
   );
 
-  return twiml.toString();
+  return voiceResponse.toString();
 }
+
+exports.giveHint = function giveHint(stage, code) {
+  const voiceResponse = new VoiceResponse();
+
+  const name = names[code];
+
+  const stages = {
+    0: 'Cíl se nachází v Zahradní restauraci Klamovka.',
+    1: 'Ohyb ulice Kunětická.',
+    2: 'Muzeum Antonína Dvořáka.',
+    3: 'Amfiteátr Albertov.',
+    4: 'Podskalská Celnice.',
+    5: 'Venkovní posilovna Hořejší nábřeží.',
+    6: 'Evangelický kostel Jana Amose Komenského.',
+    7: 'Lipová alej v ulici U Mrázovky.',
+    8: 'Autobusová zastávka U Blaženky.',
+    9: 'Casselův pomník.',
+  }
+  
+  if (stage === '*') {
+    voiceResponse.say(
+      `Vaše jméno je ${name}.`,
+      {loop: 1, language: 'cs-CZ', voice: 'Google.cs-CZ-Standard-A'}
+    );
+
+    voiceResponse.hangup();
+    return voiceResponse.toString();
+  }
+
+  voiceResponse.say(
+    `Záchrana pro šifru číslo ${stage}:     ${stages[stage]}`,
+    {loop: 2, language: 'cs-CZ', voice: 'Google.cs-CZ-Standard-A'}
+  );
+
+  voiceResponse.hangup();
+
+  console.info('DEAD', name, stage);
+
+  return voiceResponse.toString();
+};
 
 /**
  * Returns an xml with the redirect
@@ -101,9 +159,9 @@ function listPlanets() {
 function redirectWelcome() {
   const twiml = new VoiceResponse();
 
-  twiml.say('Returning to the main menu', {
-    voice: 'Polly.Amy',
-    language: 'en-GB',
+  twiml.say('Nesprávný kód hráče.', {
+    voice: 'Google.cs-CZ-Standard-A',
+    language: 'cs-CZ',
   });
 
   twiml.redirect('/ivr/welcome');
