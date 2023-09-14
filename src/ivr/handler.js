@@ -127,7 +127,7 @@ exports.giveHint = function giveHint(stage, code) {
     6: 'Evangelický kostel Jana Amose Komenského.',
     7: 'Lipová alej v ulici U Mrázovky.',
     8: 'Autobusová zastávka U Blaženky.',
-    9: 'Casselův pomník.',
+    9: 'Pomník 100 metrů severo-severo-západně od tramvajové zastávky Klamovka.',
   }
   
   if (stage === '*') {
