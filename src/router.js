@@ -4,6 +4,11 @@ const ivrRouter = require('./ivr/router');
 
 const router = new Router();
 
+// GET: / - home page
+router.get('/', (req, res) => {
+  res.json('OK');
+});
+
 router.use('/ivr', twilio.webhook({validate: false}), ivrRouter);
 
 module.exports = router;
