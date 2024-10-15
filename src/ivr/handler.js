@@ -137,7 +137,7 @@ exports.giveHint = function giveHint(stage, code) {
     6: 'Velký mlýn.',
     7: 'Dětské hřiště Na Rokytce.',
     8: 'Pivovar Kilián.',
-    9: 'Park Podviní.',
+    9: 'Socha Fragment v parku Podviní.',
   }
   
   if (stage === '*') {
