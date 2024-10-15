@@ -1,7 +1,4 @@
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
-1
-2
-3
 
 const names = {
   7532: "Míla",
