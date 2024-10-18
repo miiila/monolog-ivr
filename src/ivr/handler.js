@@ -131,7 +131,7 @@ exports.giveHint = function giveHint(stage, code) {
     3: 'Vítkov - kóta.',
     4: 'Socha Vzpomínka v Kaizlových sadech.',
     5: 'Rozcestí jižně od tramvajové zastávky Libeňský most.',
-    6: '33 metrů západně od Velkého mlýna.',
+    6: 'Třicet tři metrů západně od Velkého mlýna.',
     7: 'Dětské hřiště Na Rokytce.',
     8: 'Pivovar Kilián.',
     9: 'Socha Fragment v parku Podviní.',
