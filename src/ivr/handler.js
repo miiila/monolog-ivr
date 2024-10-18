@@ -127,11 +127,11 @@ exports.giveHint = function giveHint(stage, code) {
   const stages = {
     0: 'Cíl se nachází v restauraci Podviňák.',
     1: 'Kostnické náměstí.',
-    2: 'Vítkov - památník.',
+    2: 'Vítkov - jezdecká socha Jana Žižky.',
     3: 'Vítkov - kóta.',
     4: 'Socha Vzpomínka v Kaizlových sadech.',
     5: 'Rozcestí jižně od tramvajové zastávky Libeňský most.',
-    6: 'Velký mlýn.',
+    6: '33 metrů západně od Velkého mlýna.',
     7: 'Dětské hřiště Na Rokytce.',
     8: 'Pivovar Kilián.',
     9: 'Socha Fragment v parku Podviní.',
