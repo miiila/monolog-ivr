@@ -147,8 +147,9 @@ exports.giveHint = function giveHint(stage, code) {
     return voiceResponse.toString();
   }
 
+  const intro = stage === 0 ? '' : `Záchrana pro šifru číslo ${stage}` 
   voiceResponse.say(
-    `Záchrana pro šifru číslo ${stage}:     ${stages[stage]}`,
+    `${intro}: ${stages[stage]}`,
     {loop: 2, language: 'cs-CZ', voice: 'Google.cs-CZ-Standard-A'}
   );
 
